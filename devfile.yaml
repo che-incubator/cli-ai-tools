@@ -1,0 +1,11 @@
+schemaVersion: 2.3.0
+metadata:
+  name: cli-ai-tools
+components:
+  - name: tools
+    container:
+      image: quay.io/che-incubator/cli-ai-tools:latest
+      memoryRequest: 1Gi
+      memoryLimit: 16Gi
+      cpuLimit: '4'
+      cpuRequest: '0.5'
