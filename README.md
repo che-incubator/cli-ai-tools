@@ -2,7 +2,14 @@
 
 ## Overview
 
+
+```sh
+quay.io/che-incubator/cli-ai-tools:latest
+```
+
 This repository provides a pre-configured development environment, designed for use within Eclipse Che. It comes equipped with a comprehensive set of tools and configurations to support various development workflows, with a focus on Python and modern command-line utilities.
+
+
 
 ## AI-Powered Development
 
