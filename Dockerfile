@@ -20,20 +20,23 @@ RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.n
     rm -rf /var/cache/yum
 
 # Install uv - the fast Python package installer and resolver
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+# Use UV_INSTALL_DIR to force a system-wide installation in /usr/local,
+# which places the 'uv' binary in /usr/local/bin. This is a persistent location.
+RUN curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="/usr/local/bin" sh
 
-# Add uv's installation directory to the PATH for root and subsequent users
-ENV PATH="/root/.cargo/bin:${PATH}"
+# Copy the requirements file for ra-aid
+COPY ra-aid-requirements.txt /tmp/ra-aid-requirements.txt
 
-# Create a Python virtual environment for the ra-aid package and install it
+# Create a Python virtual environment for the ra-aid package and install dependencies from ra-aid-requirements.txt
 RUN uv venv /opt/ra_aid_venv --python 3.12 \
-    && . /opt/ra_aid_venv/bin/activate \
-    && uv pip install protobuf==4.25.3 googleapis-common-protos==1.63.0 ra-aid
+    # && uv pip install protobuf==4.25.3 googleapis-common-protos==1.63.0 ra-aid
+    # TODO: Temporary fix for this issue: https://github.com/ai-christianson/RA.Aid/issues/252
+    # TODO: After the issue is fixed, uncomment the line above and remove requirements file.
+    && uv pip install --no-cache-dir -r /tmp/ra-aid-requirements.txt --python /opt/ra_aid_venv/bin/python
 
 # Create a Python virtual environment for the aider-chat package and install it
 RUN uv venv /opt/aider_chat_venv --python 3.12 \
-    && . /opt/aider_chat_venv/bin/activate \
-    && uv pip install aider-chat
+    && uv pip install aider-chat --python /opt/aider_chat_venv/bin/python
 
 # Add the bin directories of both virtual environments to the PATH
 ENV PATH="/opt/ra_aid_venv/bin:/opt/aider_chat_venv/bin:${PATH}"
