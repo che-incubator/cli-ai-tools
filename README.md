@@ -17,6 +17,7 @@ This environment is supercharged with powerful command-line AI tools to streamli
 
 - **Aider (`aider`)**: Your AI pair-programming partner in the terminal. Aider works with local git repositories, allowing you to ask for new features, write tests, or refactor code, and it will apply the changes directly to your files.
 - **RA.Aid (`ra-aid`)**: An open-source AI assistant that combines research, planning, and implementation to help you build software faster and smarter.
+- **Goose (`goose`)**: An AI-powered developer agent that can help you with coding tasks, debugging, and general software development workflows right from your terminal.
 
 ## Base Image
 
