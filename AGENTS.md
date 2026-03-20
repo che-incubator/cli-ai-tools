@@ -12,7 +12,7 @@ Base image: `quay.io/devfile/universal-developer-image:latest`
 
 ## Structure
 
-```
+```text
 cli-ai-tools/
 ├── Dockerfile                    # THE core file — builds the image
 ├── devfile.yaml                  # Che devfile (image ref + resource limits only)
@@ -110,7 +110,7 @@ No linters, formatters, or test suites. **Validation = successful Docker build.*
 ### GitHub Actions
 
 - EPL-2.0 license header block at top of every workflow file.
-- Pinned action versions (`@v3`, `@v4`) — no `@latest` or commit SHAs.
+- Prefer pinning actions to full-length commit SHAs for immutability; major version tags (`@v3`, `@v4`) are acceptable as a minimum. Never use `@latest`.
 
 ### Git
 
