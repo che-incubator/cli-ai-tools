@@ -13,6 +13,7 @@ RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.n
     zsh \
     ripgrep \
     ca-certificates \
+    bzip2 \
     python3.12 && \
     yum copr enable -y atim/starship && \
     yum install -y starship && \
@@ -40,6 +41,28 @@ RUN uv venv /opt/aider_chat_venv --python 3.12 \
 
 # Add the bin directories of both virtual environments to the PATH
 ENV PATH="/opt/ra_aid_venv/bin:/opt/aider_chat_venv/bin:${PATH}"
+
+# Install Goose
+ENV GOOSE_VERSION=v1.28.0
+RUN mkdir -p /opt/goose-install && \
+    curl -L -o /opt/goose-install/goose.tar.bz2 \
+    https://github.com/block/goose/releases/download/${GOOSE_VERSION}/goose-x86_64-unknown-linux-gnu.tar.bz2 && \
+    tar -xjf /opt/goose-install/goose.tar.bz2 -C /opt/goose-install && \
+    mv /opt/goose-install/goose /usr/local/bin/goose && \
+    chmod +x /usr/local/bin/goose && \
+    rm -rf /opt/goose-install
+
+# Pre-configure Paths & Permissions
+# We pre-create the nested folders Goose expects to avoid "Permission Denied"
+# when they try to mkdir at runtime.
+RUN mkdir -p \
+    /home/user/.local/bin \
+    /home/user/.local/share/goose \
+    /home/user/.local/state/goose/logs \
+    /home/user/.config/goose \
+    /home/user/.cache/goose && \
+    chown -R 10001:0 /home/user/.local && \
+    chmod -R g=u /home/user
 
 # Install chectl
 RUN curl -Lo /usr/local/bin/chectl https://che-incubator.github.io/chectl/install.sh && \
