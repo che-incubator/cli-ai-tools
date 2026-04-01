@@ -50,7 +50,17 @@ RUN mkdir -p /opt/goose-install && \
     tar -xjf /opt/goose-install/goose.tar.bz2 -C /opt/goose-install && \
     mv /opt/goose-install/goose /usr/local/bin/goose && \
     chmod +x /usr/local/bin/goose && \
-    rm -rf /opt/goose-install
+    rm -rf /opt/goose-install 
+
+# Install OpenCode
+ENV OPENCODE_VERSION=v1.3.13
+RUN mkdir -p /opt/opencode-install && \
+    curl -L -o /opt/opencode-install/opencode.tar.gz \
+    https://github.com/anomalyco/opencode/releases/download/${OPENCODE_VERSION}/opencode-linux-x64.tar.gz && \
+    tar -xzf /opt/opencode-install/opencode.tar.gz -C /opt/opencode-install && \
+    mv /opt/opencode-install/opencode /usr/local/bin/opencode && \
+    chmod +x /usr/local/bin/opencode && \
+    rm -rf /opt/opencode-install 
 
 # Pre-configure Paths & Permissions
 # We pre-create the nested folders Goose expects to avoid "Permission Denied"
